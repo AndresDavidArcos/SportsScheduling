@@ -12,7 +12,7 @@ constraint forall(i in 1..dates) (forall(j in 1..n) (PF[i,j] >= -n /\ PF[i,j] <=
 
 constraint forall(i in 1..dates-1) (forall(j in 1..n) (abs(PF[i,j]) != abs(PF[i+1,j]))); % no pueden haber dos partidos iguales consecutivamente
 
-constraint forall(j in 1..n) (sum(i in 1..n)(PF[i,j] < 0) <= Max /\ sum(i in 1..n)(PF[i,j] < 0) >= Min); % un equipo puede estar de gira o en permanencia con un tamaño de Min a Max
+constraint forall(j in 1..n) (sum(i in 1..n)(PF[i,j] < 0) <= Max /\ sum(i in 1..n)(PF[i,j] < 0) >= Min); % un equipo puede estar de gira o en permanencia con un tamaño de Min a Max (ESTA RESTRICCION NO SIRVE, FALTA IMPLEMENTAR)
 
 constraint forall(j in 1..n) (sum(i in 1..n)(PF[i,j] < 0) == n-1 /\ sum(i in 1..n)(PF[i,j] > 0) == n-1); % un equipo debe jugar de local y de visitante la misma cantidad de veces
 
