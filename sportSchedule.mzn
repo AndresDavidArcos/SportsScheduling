@@ -42,7 +42,7 @@ constraint forall(j in 1..n) (sum(i in 1..dates)(PF[i,j] < 0) == n-1 /\ sum(i in
 constraint forall(j in 1..n) (forall(i1, i2 in 1..dates where i1<i2) (PF[i1,j] != PF[i2, j]) ) ; % un equipo se enfrenta contra otro solo una vez de ida y una vez de vuelta.
 constraint forall(i in 1..n) (forall(j1, j2 in 1..n where j1<j2) (PF[i,j1] != PF[i, j2]) ) ; % no pueden haber dos partidos iguales en una misma fecha
 
-constraint forall(i in 1..dates, j in 1..n) (PF[i,j] > 0 -> PF[i,PF[i,j]]=-j /\ PF[i,j] < 0 -> PF[i,abs(PF[i,j])]= j);
+constraint forall(i in 1..dates, j in 1..n) (PF[i,j] > 0 -> PF[i,PF[i,j]]=-j /\ PF[i,j] < 0 -> PF[i,abs(PF[i,j])]= j);%En cada fecha, si un equipo j juega contra un equipo k de visitante, entonces el equipo k jugara contra el equipo j pero k siendo el local y visceversa. 
 
 solve satisfy;
 
