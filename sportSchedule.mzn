@@ -37,12 +37,15 @@ constraint forall(i in 1..dates, j in 1..n) (
 
 constraint forall(j in 1..n, i in 1..dates) (
   if i == dates then 
-    if(Giras[i,j] < 0) then Giras[i,j] >= Min
+    if Giras[i,j] < 0 then Giras[i,j] >= Min
     else true
     endif
   else
-    if(Giras[i,j] > 0) then 
-      if(Giras[i-1,j] < 0) then Giras[i-1,j] >= Min
+    if i != 1 then
+      if Giras[i,j] > 0 then 
+        if Giras[i-1,j] < 0 then Giras[i-1,j] >= Min
+        else true
+        endif
       else true
       endif
     else true
@@ -56,8 +59,11 @@ constraint forall(j in 1..n, i in 1..dates) (
     else true
     endif
   else
-    if(Permanencias[i,j] < 0) then 
-      if(Permanencias[i-1,j] > 0) then Permanencias[i-1,j] >= Min
+    if i != 1 then
+      if(Permanencias[i,j] < 0) then 
+        if(Permanencias[i-1,j] > 0) then Permanencias[i-1,j] >= Min
+        else true
+        endif
       else true
       endif
     else true
