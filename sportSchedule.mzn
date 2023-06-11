@@ -22,10 +22,7 @@ constraint forall(i in 1..dates, j in 1..n) (
     if i == 1 then Permanencias[i,j] = 1
     else Permanencias[i,j] = Permanencias[i-1, j] +1
     endif
-  else 
-    if i == 1 then Permanencias[i,j] = 0 
-    else Permanencias[i,j] = 0 /\ Permanencias[i-1, j] >= Min
-    endif    
+  else Permanencias[i,j] = 0  
   endif
 );%Permanencias en su dominio solo podra tomar valores de 0 hasta Max asegurando que un equipo solo este en permanencia hasta Max veces.
 
@@ -34,10 +31,7 @@ constraint forall(i in 1..dates, j in 1..n) (
     if i == 1 then Giras[i,j] = 1
     else Giras[i,j] = Giras[i-1, j] +1
     endif
-  else 
-    if i == 1 then Giras[i,j] = 0 
-    else Giras[i,j] = 0 /\ Giras[i-1, j] >= Min
-    endif
+  else Giras[i,j] = 0
   endif
 );%Giras en su dominio solo podra tomar valores de 0 hasta Max asegurando que un equipo solo este de gira hasta Max veces.
 
