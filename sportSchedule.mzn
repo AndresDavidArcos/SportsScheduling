@@ -17,6 +17,8 @@ constraint forall(j in 1..n) (sum(i in 1..n)(PF[i,j] < 0) <= Max /\ sum(i in 1..
 constraint forall(j in 1..n) (sum(i in 1..n)(PF[i,j] < 0) == n-1 /\ sum(i in 1..n)(PF[i,j] > 0) == n-1); % un equipo debe jugar de local y de visitante la misma cantidad de veces
 
 constraint forall(j in 1..n) (forall(i1, i2 in 1..dates where i1<i2) (PF[i1,j] != PF[i2, j]) ) ; % un equipo se enfrenta contra otro solo una vez de ida y una vez de vuelta.
+constraint forall(i in 1..n) (forall(j1, j2 in 1..n where j1<j2) (PF[i,j1] != PF[i, j2]) ) ; % no pueden haber dos partidos iguales en una misma fecha
+
 
 solve satisfy;
 
