@@ -43,4 +43,4 @@ constraint forall(i in 1..n) (forall(j1, j2 in 1..n where j1<j2) (PF[i,j1] != PF
 
 solve satisfy;
 
-output["Test = \(PF[1,2])"];
+output["Test = \(PF)"];
