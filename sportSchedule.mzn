@@ -31,9 +31,39 @@ constraint forall(i in 1..dates, j in 1..n) (
     if i == 1 then Giras[i,j] = 1
     else Giras[i,j] = Giras[i-1, j] +1
     endif
-  else Giras[i,j] = 0
+  else Giras[i,j] = 0  
   endif
 );%Giras en su dominio solo podra tomar valores de 0 hasta Max asegurando que un equipo solo este de gira hasta Max veces.
+
+constraint forall(j in 1..n, i in 1..dates) (
+  if i == dates then 
+    if(Giras[i,j] < 0) then Giras[i,j] >= Min
+    else true
+    endif
+  else
+    if(Giras[i,j] > 0) then 
+      if(Giras[i-1,j] < 0) then Giras[i-1,j] >= Min
+      else true
+      endif
+    else true
+    endif
+  endif
+);
+
+constraint forall(j in 1..n, i in 1..dates) (
+  if i == dates then 
+    if(Permanencias[i,j] > 0) then Permanencias[i,j] >= Min
+    else true
+    endif
+  else
+    if(Permanencias[i,j] < 0) then 
+      if(Permanencias[i-1,j] > 0) then Permanencias[i-1,j] >= Min
+      else true
+      endif
+    else true
+    endif
+  endif
+);
 
 
 
