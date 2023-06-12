@@ -114,6 +114,7 @@ endif
 j in 1..n, i in 1..dates
 ]);
 
-solve satisfy;
+%solve satisfy;
+solve minimize costosGiras;
 
 output ["\(PF) costos giras: \(costosGiras)"];
