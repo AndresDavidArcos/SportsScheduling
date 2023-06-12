@@ -10,6 +10,7 @@ dates = 2*(n-1);
 array[1..dates, 1..n] of var int: PF;
 array[1..dates, 1..n] of var 0..Max: Giras;
 array[1..dates, 1..n] of var 0..Max: Permanencias;  
+var int: costosGiras;
 %fin variables
 
 
@@ -76,6 +77,9 @@ constraint forall(j in 1..n)(
               endif
            )  
 );
+%FUNCION OBJETIVO
+constraint costosGiras = sum([if PF[i,j] < 0 then 0 else D[j, abs(PF[i,j])] endif | j in 1..n, i in 1..dates]);
 
+solve minimize costosGiras;
 
-output ["\(PF)"];
+output ["\(PF) costos giras: \(costosGiras)"];
