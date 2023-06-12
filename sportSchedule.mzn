@@ -23,7 +23,11 @@ constraint forall(i in 1..n) (forall(j1, j2 in 1..n where j1<j2) (PF[i,j1] != PF
 
 constraint forall(j in 1..n) (forall(i1,i2 in 1..dates where i1<i2) (PF[i1,j] != PF[i2, j])); % //cada equipo solo puede enfrentarse a otro equipo dos veces, una como local y otra como visitante.
 
-constraint forall(i in 1..dates, j in 1..n) (PF[i,j] > 0 -> PF[i,PF[i,j]]=-j /\ PF[i,j] < 0 -> PF[i,abs(PF[i,j])]= j);%//En cada fecha, si un equipo j juega contra un equipo k de visitante, entonces el equipo k jugara contra el equipo j pero k siendo el local y visceversa. 
+constraint forall(i in 1..dates, j in 1..n) (
+   if PF[i,j] < 0 then PF[i, abs(PF[i,j])] = j            
+   else PF[i, PF[i,j]] = -j            
+   endif
+);%//En cada fecha, si un equipo j juega contra un equipo k de visitante, entonces el equipo k jugara contra el equipo j pero k siendo el local y visceversa. 
 
 constraint forall(i in 1..dates, j in 1..n) (
   if PF[i,j] > 0 then
@@ -43,7 +47,7 @@ constraint forall(i in 1..dates, j in 1..n) (
   endif
 );%Giras en su dominio solo podra tomar valores de 0 hasta Max asegurando que un equipo solo este de gira hasta Max veces.
 
-constraint forall(j in 1..n, i in 1..dates)(
+constraint forall(j in 1..n, i in 2..dates)(
 if i == dates then 
   if PF[i,j] < 0 then 
   Giras[i,j]>=Min
@@ -61,7 +65,7 @@ endif
 );%Las giras consecutivas no pueden ser menores que Min
 
 
-constraint forall(j in 1..n, i in 1..dates)(
+constraint forall(j in 1..n, i in 2..dates)(
   if i == dates then 
     if PF[i,j] > 0 then 
     Permanencias[i,j] >= Min
