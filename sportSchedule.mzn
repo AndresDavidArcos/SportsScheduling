@@ -44,39 +44,42 @@ constraint forall(i in 1..dates, j in 1..n) (
   endif
 );%Giras en su dominio solo podra tomar valores de 0 hasta Max asegurando que un equipo solo este de gira hasta Max veces.
 
-%Debe haber un mínimo de giras consecutivas
-constraint forall(j in 1..n)(
-           forall(i in 2..2*(n-1))(
-              if i == 2*(n-1) then 
-                  if PF[i,j] < 0 then 
-                   Giras[i,j]>=Min
-                  endif
-             else
-                if (PF[i,j] > 0)then 
-                  if(PF[i-1,j] < 0)
-                    then Giras[i-1,j]>=Min              
-                  endif               
-                endif
-              endif
-           )  
-);
+constraint forall(j in 1..n, i in 2..dates)(
+if i == dates then 
+  if PF[i,j] < 0 then 
+  Giras[i,j]>=Min
+  else true
+  endif
+else
+  if (PF[i,j] > 0)then 
+    if(PF[i-1,j] < 0)
+    then Giras[i-1,j]>=Min  
+    else true            
+    endif   
+  else true            
+  endif
+endif            
+);%Las giras consecutivas no pueden ser menores que Min
 
-%Debe haber un mínimo de permanencias consecutivas
-constraint forall(j in 1..n)(
-           forall(i in 2..2*(n-1))(
-              if i == 2*(n-1) then 
-                  if PF[i,j] > 0 then 
-                   Permanencias[i,j]>=Min
-                  endif
-             else
-                if (PF[i,j] < 0)then 
-                  if(PF[i-1,j] > 0)
-                    then Permanencias[i-1,j]>=Min              
-                  endif               
-                endif
-              endif
-           )  
-);
+
+constraint forall(j in 1..n, i in 2..dates)(
+  if i == dates then 
+    if PF[i,j] > 0 then 
+    Permanencias[i,j] >= Min
+    else true
+    endif
+  else
+    if PF[i,j] < 0 then 
+      if PF[i-1,j] > 0 then 
+      Permanencias[i-1,j] >= Min
+      else true              
+      endif
+    else true               
+    endif
+  endif        
+);%Las permanencias consecutivas no pueden ser menores que Min
+
+
 %FUNCION OBJETIVO
 constraint costosGiras = sum([
 if i == 1 then 
