@@ -78,7 +78,35 @@ constraint forall(j in 1..n)(
            )  
 );
 %FUNCION OBJETIVO
-constraint costosGiras = sum([if PF[i,j] < 0 then 0 else D[j, abs(PF[i,j])] endif | j in 1..n, i in 1..dates]);
+constraint costosGiras = sum([
+if i == 1 then 
+  if PF[i,j] < 0 then D[j, abs(PF[i,j])]
+  else 0
+  endif
+elseif i == dates then 
+  if PF[i-1,j] < 0 then 
+    if PF[i,j] > 0 then D[abs(PF[i-1, j]), j]
+    else  D[abs(PF[i-1, j]), abs(PF[i,j])] + D[abs(PF[i,j]), j]
+    endif
+  else 
+    if PF[i,j] > 0 then 0
+    else D[j, abs(PF[i,j])] + D[abs(PF[i,j]), j]
+    endif    
+  endif  
+else 
+  if PF[i-1,j] < 0 then 
+    if PF[i,j] > 0 then D[abs(PF[i-1, j]), j]
+    else  D[abs(PF[i-1, j]), abs(PF[i,j])]
+    endif
+  else 
+    if PF[i,j] > 0 then 0
+    else D[j, abs(PF[i,j])]
+    endif    
+  endif    
+endif
+| 
+j in 1..n, i in 1..dates
+]);
 
 solve minimize costosGiras;
 
